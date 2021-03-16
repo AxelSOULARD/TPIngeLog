@@ -22,12 +22,12 @@ public class TodoListController {
 	
 	
 	private GetTodoItems getTodoItemsQuery;
-	// A compléter
+	private AddTodoItem addTodoItem;
 	
 	
 	@Inject
-	//A compléter
 	public TodoListController(GetTodoItems getTodoItemsQuery ) {
+		this.addTodoItem = addTodoItem;
 		this.getTodoItemsQuery = getTodoItemsQuery;
 	}
 	
@@ -37,10 +37,8 @@ public class TodoListController {
 	}
 	
 	
-	// Endpoint de type POST vers "/todos"
-	// A compléter
 	public void ajouterItem(@RequestBody TodoItem item) {
-		// A compléter		
+		this.addTodoItem.addTodoItem(item);	
 	}
 	
 	

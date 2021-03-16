@@ -37,6 +37,10 @@ public class TodoItemPersistenceAdapter implements LoadTodoItem,UpdateTodoItem {
 				.map(todoItemJpaEntory -> mapper.mapToTodoItem(todoItemJpaEntory)).collect(Collectors.toList());
 	}
 
-	// A compléter
+	@PostMapping("/todos")
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public void createTodoItem(@RequestBody TodoItem todoItem) {
+		this.todoItemRepository.save(todoItem);
+	}
 
 }

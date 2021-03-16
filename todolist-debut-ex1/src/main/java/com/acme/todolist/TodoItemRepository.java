@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;;
 
 /**
  * DAO d'accès aux TodoItem
- * @author bflorat
+ * @author 
  *
  */
 public interface TodoItemRepository extends CrudRepository<TodoItem,String> {

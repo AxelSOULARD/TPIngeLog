@@ -39,24 +39,44 @@ TIP: [Rappel Git] Trois dépôts sont ici utilisés: le dépot Github de l'ensei
 
 *Le code est-il structuré en couches ? Quel problèmes ce code peut-il poser ?*
 
+#On remarque que le code n'est pas structuré en couche. Le problème s'avère s'il y a beaucoup de classe, il va être difficile de s'y retrouver. L'un des objectif de la structuration des couches c'est pouvoir s'y retrouver et grouper les classes par paquet.#
+
 *Où se trouve le code métier (voir la règle de gestion RG 1) ?*
 
+#Le code métier dans todolist-debut-ex1 se trouve dans le contrôleur (TodoListController.java). Néanmoins, d'après la règle RG 1, il n'est pas bon de le mettre, ici.#
+
 *Cette règle est-elle facilement testable par un test unitaire ?*
+
+#Cette règle de gestion n'est pas facilement testable par un test unitaire parce qu'elle a une dépendance vers la base de donnée et plus particulièrement vers un objet JPA. Ainsi, afin de réaliser un test unitaire dessus, il faudrait un objet JPA ou un outil de mock.#
 
 * Lancer une base PostgreSQL en Docker dans un terminal (on lance ici la base en mode interactif pour visualiser son activité. Pour la lancer en tâche de fond, remplacer les options `it` par `d` comme 'daemon'):
 ```bash
 docker run -it -e POSTGRES_PASSWORD=password -p 5432:5432 postgres
-```
+
 *Expliquer cette ligne de commande (y compris les options utilisées)*
+
+#-> la commande permetr de lancer une base PostgreSQL#
+#run permet de lancer docker#
+#L'option -it permet de connecter un terminal de l'utilisateur au flux d'entrée et de sortie#
+#L'option -e met en place une variable d'environnement#
+#POSTGRES_PASSWORD=password dit que password est la valeur du paramètre mot de passe#
+#L'option -p permet de publier le port du conteneur à l'hôte#
+#5432:5432 donne le numéro de port public et privé du conteneur#
+#postgres c'est le nom de l'application pour le conteneur#
 
 * Compléter le code manquant dans la méthode `TodoListController.createTodoItem()`
 
 *Pourquoi `todoItemRepository` est-il `null` ? Quelle est la meilleure façon de l'injecter ?*
 
+#todoItemRepository est null car il n'a pas été injecté de la bonne façon. Son instanciation ne se passe pas bien donc cela conduit à cette situation de null.#
+
+#Au lieu de creer directement l'objet dans le contrôlleur, qui n'est pas une bonne pratique de conception, il est préfeérable de se faire injecter l'objet par l'injection de dépendance. On utilise @Inject. On pourra donc faire de l'autowiring.#
+
 * Modifier le code en conséquence.
 
 * Tester vos endpoints avec un client REST.
 
+#Le lancement marche, aucune erreur n'est rendu : Started TodoListApplication in 5.182 seconds (JVM running for 6.04).#
 
 [NOTE]
 ====
@@ -94,6 +114,12 @@ Source : http://leanpub.com/get-your-hands-dirty-on-clean-architecture[Tom Hombe
 
 *Rappeler en quelques lignes les grands principes de l'architecture hexagonale.*
 
+#Les grands principes de l'architecture hexagonale sont :#
+#- Une couche centrale qui est indépendante de toutes technologies (Domain Layer)#
+#- Séparer explicitement les couches Applications, Domain et Infrastructure#
+#- Les dépendances vont vers les domaines#
+#- On isole les frontières par des Ports et des Adapters.#
+
 Compléter ce code avec une fonctionnalité de création de `TodoItem`  persisté en base et appelé depuis un endpoint REST `POST /todos` qui :
 
 * prend un `TodoItem` au format JSON dans le body (voir exemple de contenu plus haut);
@@ -110,7 +136,11 @@ _Temps estimé : 20 mins_
 
 *Quels types de tests devra-t-on écrire pour les adapteurs ?* 
 
+#Les tests d'intégration (TI) sont les plus adaptés aux Adapters. Ils permettent d'évaluer la conformité d'un système ou d'un composant suivant des exigences fonctionnelles. On les effectue après les tests unitaire (TU) et avant les tests de validation.#
+
 *Que teste-on dans ce cas ?*
+
+#Nous allons directement tester le système pour voir sa réactivité#
 
 *S'il vous reste du temps, écrire quelques uns de ces types de test.*
 
